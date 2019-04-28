@@ -94,43 +94,14 @@ void boundaryFill4(int x, int y, Color fillColor, Color boarderColor) {
 	getpixel(x, y, interiorColor);
 	if (compareColor(interiorColor, fillColor) == 0 && compareColor(interiorColor, boarderColor) == 0) {
 		setpixel(x, y);
+		//Sleep(0.5);
+		glFlush();
 		boundaryFill4(x + 1, y, fillColor, boarderColor);
 		boundaryFill4(x - 1, y, fillColor, boarderColor);
 		boundaryFill4(x, y + 1, fillColor, boarderColor);
 		boundaryFill4(x, y - 1, fillColor, boarderColor);
 	}
 }
-
-void boundaryFill8(int x, int y, Color fillColor, Color boarderColor) {
-	Color interiorColor, a, b, c, d;
-	getpixel(x, y, interiorColor);
-	getpixel(x + 1, y - 1, a);
-	getpixel(x, y - 1, b);
-	getpixel(x, y + 1, c);
-	getpixel(x - 1, y, d);
-	int i = 0;
-	if (compareColor(a, boarderColor) == 1) i++;
-	if (compareColor(b, boarderColor) == 1) i++;
-	if (compareColor(c, boarderColor) == 1) i++;
-	if (compareColor(d, boarderColor) == 1) i++;
-	if (i <= 1) {
-		if (compareColor(interiorColor, fillColor) == 0 && compareColor(interiorColor, boarderColor) == 0) {
-			setpixel(x, y);
-			boundaryFill8(x + 1, y, fillColor, boarderColor);
-			boundaryFill8(x, y - 1, fillColor, boarderColor);
-			boundaryFill8(x - 1, y, fillColor, boarderColor);
-			boundaryFill8(x, y + 1, fillColor, boarderColor);
-			boundaryFill8(x + 1, y - 1, fillColor, boarderColor);
-			boundaryFill8(x - 1, y - 1, fillColor, boarderColor);
-			boundaryFill8(x - 1, y + 1, fillColor, boarderColor);
-			boundaryFill8(x + 1, y + 1, fillColor, boarderColor);
-		}
-	}
-}
-
-
-
-
 
 void display1() {
 	glClear(GL_COLOR_BUFFER_BIT);
@@ -178,8 +149,8 @@ void display2() {
 	boundaryFill4(250, 265, fillColor, boarderColor);
 	boundaryFill4(265, 410, fillColor, boarderColor);
 	boundaryFill4(295, 370, fillColor, boarderColor);
-	//glFlush();
-	glutSwapBuffers();
+	glFlush();
+	//glutSwapBuffers();
 }
 int main(int argc, char** argv) {
 	glutInit(&argc, argv);

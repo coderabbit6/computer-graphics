@@ -1,39 +1,30 @@
-#include <gl\glut.h>  
-#include <gl\GLU.h>
-#include <gl\GL.h>
-#include <windows.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <iostream>
+#define GLUT_DISABLE_ATEXIT_HACK 
+#include<windows.h>
 
-using namespace std;
-//GLint * a, b[1];
-const int Width = 600;
-const int Height = 600;
+#include<GL/glut.h>
 
+#include<GL/gl.h>
 
 typedef float Color[3];
+
 //获取像素点的颜色
-void getpixel(GLint x, GLint y, Color color)
-{
+void getpixel(GLint x, GLint y, Color color) {
 	glReadPixels(x, y, 1, 1, GL_RGB, GL_FLOAT, color);
 }
-//画点
-void setpixel(GLint x, GLint y)
-{
+
+//画点函数
+void setpixel(GLint x, GLint y) {
 	glBegin(GL_POINTS);
 	glVertex2f(x, y);
 	glEnd();
 }
 //比较颜色是否相等
-int compareColor(Color color1, Color color2)
-{
+int compareColor(Color color1, Color color2) {
 	if (color1[0] != color2[0] || color1[1] != color2[1] || color1[2] != color2[2]) { return 0; }
 	else { return 1; }
 }
-//四连通种子填充
-void boundaryFill4(int x, int y, Color fillColor, Color boarderColor)
-{
+//种子填充
+void boundaryFill4(int x, int y, Color fillColor, Color boarderColor) {
 	Color interiorColor;
 	glColor3fv(fillColor);
 	getpixel(x, y, interiorColor);
@@ -46,10 +37,37 @@ void boundaryFill4(int x, int y, Color fillColor, Color boarderColor)
 	}
 }
 
-void character()
+void boundaryFill8(int x, int y, Color fillColor, Color boarderColor) {
+	Color interiorColor, a, b, c, d;
+	getpixel(x, y, interiorColor);
+	getpixel(x + 1, y - 1, a);
+	getpixel(x, y - 1, b);
+	getpixel(x, y + 1, c);
+	getpixel(x - 1, y, d);
+	int i = 0;
+	if (compareColor(a, boarderColor) == 1) i++;
+	if (compareColor(b, boarderColor) == 1) i++;
+	if (compareColor(c, boarderColor) == 1) i++;
+	if (compareColor(d, boarderColor) == 1) i++;
+	if (i <= 1) {
+		if (compareColor(interiorColor, fillColor) == 0 && compareColor(interiorColor, boarderColor) == 0) {
+			setpixel(x, y);
+			boundaryFill8(x + 1, y, fillColor, boarderColor);
+			boundaryFill8(x, y - 1, fillColor, boarderColor);
+			boundaryFill8(x - 1, y, fillColor, boarderColor);
+			boundaryFill8(x, y + 1, fillColor, boarderColor);
+			boundaryFill8(x + 1, y - 1, fillColor, boarderColor);
+			boundaryFill8(x - 1, y - 1, fillColor, boarderColor);
+			boundaryFill8(x - 1, y + 1, fillColor, boarderColor);
+			boundaryFill8(x + 1, y + 1, fillColor, boarderColor);
+		}
+	}
+}
+
+//////////////////////////////////////////////
+void polygon()
 {
-	glClear(GL_COLOR_BUFFER_BIT);//清除
-	glColor3f(0.0f, 0.0f, 0.0f);//设置线条颜色为黑色
+	glClear(GL_COLOR_BUFFER_BIT);
 	glBegin(GL_LINE_LOOP);//以下5个gl函数画西
 	glVertex2i(200, 500); glVertex2i(200, 480);
 	glVertex2i(240, 480); glVertex2i(240, 460);
@@ -93,40 +111,37 @@ void character()
 	glVertex2i(305, 272); glVertex2i(314, 286);
 	glEnd();
 
-	// 刷新
-	glFlush();
+	glFinish();
 }
 
-void myDisplay()
-{
-	Color fillColor = { 0.0, 0.0, 1.0 };//填充颜色 蓝色
-	Color boarderColor = { 0.0, 0.0, 0.0 };//边界颜色 黑色
+void display(void) {
+	Color fillColor = { 1.0, 1.0, 0.0 };//填充颜色 蓝色
+	Color boarderColor = { 0.0, 1.0, 0.0 };//边界颜色 绿色
 	glClear(GL_COLOR_BUFFER_BIT);
 	glViewport(0, 0, 500, 500);
 	glColor3fv(boarderColor);
-	character();
-	boundaryFill4(250, 490, fillColor, boarderColor);
-	boundaryFill4(240, 250, fillColor, boarderColor);
+	polygon();
+
+	//boundaryFill4(222, 358, fillColor, boarderColor);
+	boundaryFill4(300, 350, fillColor, boarderColor);
 	boundaryFill4(300, 297, fillColor, boarderColor);
+
+
 	glFlush();
 }
 
-void init(void)
-{
-	gluOrtho2D(0.0, Width, 0.0, Height);//创建一个投影平面（左下x，右上x，左下y，右上y）
-	glClearColor(1.0f, 1.0f, 1.0f, 1.0f);// 设置窗口为白色
-	glMatrixMode(GL_PROJECTION);
-}
-int main(int argc, char* argv[])
-{
-	//a = b;
+int main(int argc, char** argv) {
 	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_RGB | GLUT_SINGLE);//初始化
-	glutInitWindowSize(Width, Height);//设置窗口的宽高
-	glutCreateWindow("填充汉字");//给窗口设定名称
-	init();
-	glutDisplayFunc(&myDisplay);
-	glutMainLoop(); // glut事件处理循环
+	glutInitDisplayMode(GLUT_SINGLE | GLUT_RED);
+	glutInitWindowSize(500, 500);
+	glutInitWindowPosition(100, 100);
+	glutCreateWindow("BoundaryFill1");
 
+	glClearColor(0, 0, 0, 0.0);
+	glMatrixMode(GL_PROJECTION);//投影模型
+	gluOrtho2D(0.0, 500.0, 0.0, 500.0);
+
+	glutDisplayFunc(display);
+	glutMainLoop();
 	return 0;
 }

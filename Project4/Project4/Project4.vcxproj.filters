@@ -18,7 +18,21 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="tianchong.cpp">
+    <ClInclude Include="..\..\..\..\..\大三下学期\计算机图形学\课件\bezier-surface\BicubicBezierPatch.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\..\大三下学期\计算机图形学\课件\bezier-surface\Point3.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\..\..\大三下学期\计算机图形学\课件\bezier-surface\Point3.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\大三下学期\计算机图形学\课件\bezier-surface\BicubicBezierPatch.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\..\大三下学期\计算机图形学\课件\bezier-surface\main.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

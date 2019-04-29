@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="flowers.cpp" />
     <ClCompile Include="viewport.cpp" />
   </ItemGroup>
   <ItemGroup>

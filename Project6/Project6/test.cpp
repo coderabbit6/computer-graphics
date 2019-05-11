@@ -1,4 +1,4 @@
-#include<Windows.h>
+﻿#include<Windows.h>
 #include<iostream>
 #include<math.h>
 #include<gl/GL.h>
@@ -63,14 +63,14 @@ void render() {
 	glFlush();
 }
 
-void main(int argc, char** argv) {
-	glutInit(&argc, argv);
-	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
-	glMatrixMode(GL_PROJECTION);
-	glLoadIdentity();
-	glutInitWindowSize(640, 480);
-	glutCreateWindow("Rosette");
-	glutDisplayFunc(render);
-	myInit();
-	glutMainLoop();
-}
+//void main(int argc, char** argv) {
+//	glutInit(&argc, argv);
+//	glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+//	glMatrixMode(GL_PROJECTION);
+//	glLoadIdentity();
+//	glutInitWindowSize(640, 480);
+//	glutCreateWindow("Rosette");
+//	glutDisplayFunc(render);
+//	myInit();
+//	glutMainLoop();
+//}

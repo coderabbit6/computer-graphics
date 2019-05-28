@@ -99,10 +99,7 @@ void drawGrass()
 	int  i = 0;
 	glColor3f(0.0, 1.0, 0.0);
 
-	//cout << rule << endl;
-	//glRotatef(180, 0.0, 0.0, 1.0);
-	//glTranslatef(0.0, 30.0, 0.0);
-	//glPushMatrix();
+
 	while (i < length)
 	{
 		switch (rule[i])
@@ -186,7 +183,6 @@ int main(int args, char** argv) {
 	glutInitWindowPosition(50, 150);
 
 	glutCreateWindow("a function graphics");
-	//glutDisplayFunc(myDisplay);
 	glutDisplayFunc(display);
 	glutSpecialFunc(mySpecialKey);
 	myInit();
